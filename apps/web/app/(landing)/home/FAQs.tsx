@@ -1,71 +1,43 @@
 const faqs = [
   {
-    question: "Can I still use Inbox Zero alongside my current email client?",
+    question: "Can I still use Mailto Live alongside my current email client?",
     answer:
-      "Yes! Inbox Zero is intended to be used alongside your existing email client.",
+      "Yes! Mailto Live is intended to be used alongside your existing email client.",
   },
   {
-    question: "Is the code open-source?",
-    answer: (
-      <>
-        Yes! You can see the source code in our{" "}
-        <a
-          href="/github"
-          target="_blank"
-          className="font-semibold hover:underline"
-          rel="noreferrer"
-        >
-          GitHub repo
-        </a>
-        .
-      </>
-    ),
-  },
-  {
-    question: "Do you take feature requests?",
-    answer: (
-      <>
-        Yes! Post an issue on{" "}
-        <a
-          href="/github"
-          target="_blank"
-          className="font-semibold hover:underline"
-          rel="noreferrer"
-        >
-          GitHub
-        </a>{" "}
-        or{" "}
-        <a
-          href="mailto:elie@getinboxzero.com"
-          target="_blank"
-          className="font-semibold hover:underline"
-          rel="noreferrer"
-        >
-          email
-        </a>{" "}
-        us. We{"'"}re happy to hear how we can improve your email experience.
-      </>
-    ),
-  },
-  {
-    question: "Which email providers does Inbox Zero support?",
+    question: "Which email providers does Mailto Live support?",
     answer:
-      "We only support Gmail and Google Workspace email accounts today. We may add support for other email providers such as Outlook in the future.",
+      "Currently, Mailto Live supports Gmail and Google Workspace accounts. We are exploring the possibility of adding support for other providers like Outlook in the future.",
+  },
+  {
+    question: "How does Mailto Live help me manage my inbox better?",
+    answer:
+      "Mailto Live utilizes AI to automate repetitive tasks, such as replying to common inquiries and unsubscribing from unwanted newsletters. This allows you to focus on more important emails and reduces the time spent managing your inbox.",
+  },
+  {
+    question: "Will my data be secure with Mailto Live?",
+    answer:
+      "We prioritize user privacy and security. Mailto Live uses third-party tools to process email data and has passed Google’s secure platform tests, ensuring that user security is maintained at all levels.",
+  },
+  {
+    question: "How can I optimize my email management with Mailto Live?",
+    answer:
+      "To maximize efficiency, use our automation features to set rules for common responses and unsubscribe from newsletters with a single click. Regularly review your analytics to identify trends in your email usage, allowing you to adjust your strategies accordingly.",
   },
   {
     question: "Do you offer refunds?",
     answer: (
       <>
-        If you don{"'"}t think we provided you with value send us an{" "}
+        If you don’t think we provided you with value, send us an{" "}
         <a
-          href="mailto:elie@getinboxzero.com"
+          href="mailto:info@mailto.live"
           target="_blank"
           className="font-semibold hover:underline"
           rel="noreferrer"
         >
           email
         </a>{" "}
-        within 14 days of upgrading and we{"'"}ll refund you.
+        within 14 days of upgrading, and we’ll refund you.
       </>
     ),
   },
@@ -78,7 +50,7 @@ export function FAQs() {
       id="faq"
     >
       <h2 className="font-cal text-2xl leading-10 text-gray-900">
-        Frequently asked questions
+        Frequently Asked Questions
       </h2>
       <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
         {faqs.map((faq) => (
