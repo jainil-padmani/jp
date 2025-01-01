@@ -9,12 +9,16 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
 
-const navigation = [
-  { name: "Features", href: "/#features" },
-  { name: "FAQ", href: "/#faq" },
-  { name: "Open Source", href: "/github", target: "_blank" as const },
-  { name: "Affiliates", href: "/affiliates", target: "_blank" as const },
-  { name: "Pricing", href: "/#pricing" },
+type NavigationItem = {
+  name: string;
+  href: string;
+  target?: "_self" | "_blank"; // Define target as optional
+};
+
+const navigation: NavigationItem[] = [
+  { name: "Features", href: "/#features", target: "_self" },
+  { name: "FAQ", href: "/#faq", target: "_self" },
+  { name: "Pricing", href: "/#pricing", target: "_self" },
 ];
 
 export function Header({ className }: { className?: string }) {
@@ -29,8 +33,8 @@ export function Header({ className }: { className?: string }) {
       >
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Inbox Zero</span>
-            <Logo className="h-4 w-auto" />
+            <span className="sr-only">Mailto Live</span>
+            <Logo className="h-6 w-80" />
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -48,7 +52,7 @@ export function Header({ className }: { className?: string }) {
             <Link
               key={item.name}
               href={item.href}
-              target={item.target}
+              target={item.target || "_self"} // Provide default target if undefined
               prefetch={item.target !== "_blank"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
@@ -79,13 +83,6 @@ export function Header({ className }: { className?: string }) {
               Sign up
             </Link>
           </Button>
-
-          {/* <Link
-            href="/login"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link> */}
         </div>
       </nav>
       <Dialog
@@ -98,8 +95,8 @@ export function Header({ className }: { className?: string }) {
         <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Inbox Zero</span>
-              <Logo className="h-4 w-auto" />
+              <span className="sr-only">Mailto Live</span>
+              <Logo className="h-6 w-80" />
             </Link>
             <button
               type="button"
