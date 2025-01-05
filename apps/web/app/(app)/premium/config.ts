@@ -26,7 +26,7 @@ const pricing: Record<PremiumTier, number> = {
   [PremiumTier.PRO_MONTHLY]: 16,
   [PremiumTier.PRO_ANNUALLY]: 8,
   [PremiumTier.BUSINESS_MONTHLY]: 12,
-  [PremiumTier.BUSINESS_ANNUALLY]: 8,
+  [PremiumTier.BUSINESS_ANNUALLY]: 9,
   [PremiumTier.COPILOT_MONTHLY]: 499,
   [PremiumTier.LIFETIME]: 299,
 };
