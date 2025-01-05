@@ -19,8 +19,8 @@ export default function Page() {
         headline="Escape the Email Trap: How to Unsubscribe for Good When Senders Won't Let Go"
         datePublished="2024-08-22T08:00:00+00:00"
         dateModified="2024-08-22T08:00:00+00:00"
-        authorName="Elie Steinbock"
-        authorUrl="https://elie.tech"
+        authorName="Akshat Shah"
+        authorUrl="#"
         image={[]}
       />
       <Content />

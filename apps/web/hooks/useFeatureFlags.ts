@@ -38,6 +38,6 @@ export type PricingVariant = "control" | "business-only" | "basic-business";
 
 export function usePricingVariant() {
   return (
-    (useFeatureFlagVariantKey("pricing-options") as PricingVariant) || "control"
+    (useFeatureFlagVariantKey("pricing-options") as PricingVariant) || "business-only"
   );
 }

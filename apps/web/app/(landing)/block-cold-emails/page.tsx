@@ -9,17 +9,40 @@ import { CTA } from "@/app/(landing)/home/CTA";
 import { BasicLayout } from "@/components/layouts/BasicLayout";
 
 export const metadata: Metadata = {
-  title: "Cold Email Blocker | Inbox Zero",
-  description: "Automatically block cold emails from your inbox using AI.",
+  title: "Effortlessly Block Cold Emails with AI | MailtoLive",
+  description:
+    "Enhance your email productivity with MailtoLive's AI-powered cold email blocker. Automatically filter and manage unsolicited emails for a cleaner inbox.",
   alternates: { canonical: "/block-cold-emails" },
+  keywords: [
+    "cold email blocker",
+    "AI email management",
+    "email filtering",
+    "block spam emails",
+    "enhance email productivity",
+  ],
+  openGraph: {
+    title: "Effortlessly Block Cold Emails with AI | MailtoLive",
+    description:
+      "Enhance your email productivity with MailtoLive's AI-powered cold email blocker. Automatically filter and manage unsolicited emails for a cleaner inbox.",
+    url: "https://mailto.live/block-cold-emails",
+    images: [
+      {
+        url: "/images/cold-email-blocker.png",
+        width: 1200,
+        height: 630,
+        alt: "Cold Email Blocker Dashboard",
+      },
+    ],
+  },
 };
 
 export default function BlockColdEmails() {
   return (
     <BasicLayout>
       <Hero
-        title="Automatically block cold emails using AI"
-        subtitle="Auto archive or label cold emails from your inbox."
+        title="Effortlessly Block Cold Emails with AI"
+        subtitle="Automatically filter and manage unsolicited emails for a cleaner inbox."
+        image="/images/cold-email-blocker.png"
       />
       <Testimonials />
       <FeaturesColdEmailBlocker />

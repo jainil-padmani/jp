@@ -48,11 +48,11 @@ export function usePremium() {
 }
 
 function PremiumAlert({
-  plan = "Inbox Zero AI",
+  plan = "Mailto Live AI",
   showSetApiKey,
   className,
 }: {
-  plan?: "Inbox Zero AI" | "Inbox Zero Pro";
+  plan?: "Mailto Live AI" | "Mailto Live Pro";
   showSetApiKey: boolean;
   className?: string;
 }) {

@@ -51,7 +51,7 @@ export default async function AutomationPage() {
                   label, archive, and more.
                 </>
               }
-              videoId="1LSt3dyyZtQ"
+              videoId="1234567890"
             />
           </div>
         </div>

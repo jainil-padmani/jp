@@ -13,7 +13,7 @@ export default function PermissionsErrorPage() {
       </PageHeading>
 
       <TypographyP className="mx-auto mt-4 max-w-prose text-center">
-        You must sign in and give access to all permissions for Inbox Zero to
+        You must sign in and give access to all permissions for Mailto Live to
         work.
       </TypographyP>
 

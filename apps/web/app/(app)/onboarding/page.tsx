@@ -24,9 +24,9 @@ export default function OnboardingPage({
       <LoadStats loadBefore showToast={false} />
 
       <div className="px-4 xl:px-0">
-        <PageHeading>First steps to Inbox Zero</PageHeading>
+        <PageHeading>First steps to Mailto Live</PageHeading>
         <TypographyP>
-          Get to know Inbox Zero and set up your account.
+          Get to know Mailto Live and set up your account.
         </TypographyP>
       </div>
 
@@ -38,7 +38,7 @@ export default function OnboardingPage({
               title: "Bulk Unsubscriber",
               description: "One-click unsubscribe from emails you never read.",
               content: <OnboardingBulkUnsubscriber />,
-              videoId: "T1rnooV4OYc",
+              videoId: "123456789",
               active: !step || step === 1,
             },
             {
@@ -46,7 +46,7 @@ export default function OnboardingPage({
               description:
                 "The AI assistant helps you handle incoming emails. You tell it what to do in plain English in the file below. Try the example below or enter your own.",
               content: <OnboardingAIEmailAssistant step={2} />,
-              videoId: "1LSt3dyyZtQ",
+              videoId: "1234567890",
               active: step === 2,
             },
             {
@@ -57,7 +57,7 @@ export default function OnboardingPage({
             },
             {
               title: "Continue",
-              description: "Get started with Inbox Zero",
+              description: "Get started with Mailto Live",
               content: <OnboardingFinish />,
               active: step === 4,
             },

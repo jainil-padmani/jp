@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 export function TryInboxZero() {
   return (
     <Link
-      href={`${env.NEXT_PUBLIC_BASE_URL}/?utm_source=blog&utm_medium=inbox-zero`}
+      href={`${env.NEXT_PUBLIC_BASE_URL}/?utm_source=blog&utm_medium=mailto-live`}
     >
       <div className="rounded-lg border-2 border-blue-400 bg-white shadow-xl transition-transform duration-300 hover:scale-105">
         <Image
           src="/images/reach-inbox-zero.png"
-          alt="Inbox Zero"
+          alt="Mailto Live"
           width={320}
           height={240}
           className="w-full rounded-t-lg shadow"
@@ -23,7 +23,7 @@ export function TryInboxZero() {
         </p>
         <div className="px-4 pb-4">
           <Button className="w-full" variant="blue">
-            Try Inbox Zero
+            Try Mailto Live
           </Button>
         </div>
       </div>

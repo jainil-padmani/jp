@@ -41,7 +41,7 @@ export async function deleteUserLabels(options: { email: string }) {
   return redis.del(key);
 }
 
-// inbox zero labels
+// Mailto Live labels
 function getInboxZeroLabelsKey(email: string) {
   return `labels:inboxzero:${email}`;
 }

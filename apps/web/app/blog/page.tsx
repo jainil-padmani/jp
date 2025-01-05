@@ -28,38 +28,6 @@ type SanityPost = {
 
 const mdxPosts: Post[] = [
   {
-    title: "How Inbox Zero hit #1 on Product Hunt",
-    file: "how-my-open-source-saas-hit-first-on-product-hunt",
-    description:
-      "Two weeks ago I launched Inbox Zero on Product Hunt. It finished in first place with over 1000 upvotes and gained thousands of new users. The app, Inbox Zero, helps you clean up your inbox fast. It lets you bulk unsubscribe from newsletters, automate emails with an AI assistant, automatically block cold emails, and provides email analytics.",
-    date: "Jan 22, 2024",
-    datetime: "2024-01-22",
-    // category: { title: "Marketing", href: "#" },
-    author: {
-      name: "Elie Steinbock",
-      role: "Founder",
-      href: "#",
-      imageUrl: "/images/blog/elie-profile.jpg",
-    },
-    imageUrl: "/images/reach-inbox-zero.png",
-  },
-  {
-    title: "Why Build An Open Source SaaS",
-    file: "why-build-an-open-source-saas",
-    description:
-      "Open source SaaS products are blowing up. This is why you should consider building one.",
-    date: "Jan 25, 2024",
-    datetime: "2024-01-25",
-    // category: { title: "Marketing", href: "#" },
-    author: {
-      name: "Elie Steinbock",
-      role: "Founder",
-      href: "#",
-      imageUrl: "/images/blog/elie-profile.jpg",
-    },
-    imageUrl: "/images/reach-inbox-zero.png",
-  },
-  {
     title:
       "Escape the Email Trap: How to Unsubscribe for Good When Senders Won't Let Go",
     file: "escape-email-trap-unsubscribe-for-good",
@@ -68,10 +36,10 @@ const mdxPosts: Post[] = [
     date: "Aug 22, 2024",
     datetime: "2024-08-22",
     author: {
-      name: "Elie Steinbock",
+      name: "Akshat Shah",
       role: "Founder",
       href: "#",
-      imageUrl: "/images/blog/elie-profile.jpg",
+      imageUrl: "/images/blog/akshat-profile.jpg",
     },
     imageUrl: "/images/reach-inbox-zero.png",
   },
@@ -84,10 +52,10 @@ const mdxPosts: Post[] = [
     datetime: "2024-02-22",
     // category: { title: "Marketing", href: "#" },
     author: {
-      name: "Elie Steinbock",
+      name: "Akshat Shah",
       role: "Founder",
       href: "#",
-      imageUrl: "/images/blog/elie-profile.jpg",
+      imageUrl: "/images/blog/akshat-profile.jpg",
     },
     imageUrl: "/images/reach-inbox-zero.png",
   },
@@ -95,15 +63,15 @@ const mdxPosts: Post[] = [
     title: "How to Bulk Unsubscribe from Emails",
     file: "bulk-unsubscribe-from-emails",
     description:
-      "Want to stop the flood of unwanted subscriptions in your email? Learn how to bulk unsubscribe from emails and create a clutter-free inbox with Inbox Zero.",
+      "Want to stop the flood of unwanted subscriptions in your email? Learn how to bulk unsubscribe from emails and create a clutter-free inbox with Mailto Live.",
     date: "March 05, 2024",
     datetime: "2024-03-05",
     // category: { title: "Marketing", href: "#" },
     author: {
-      name: "Elie Steinbock",
+      name: "Akshat Shah",
       role: "Founder",
       href: "#",
-      imageUrl: "/images/blog/elie-profile.jpg",
+      imageUrl: "/images/blog/akshat-profile.jpg",
     },
     imageUrl: "/images/reach-inbox-zero.png",
   },
@@ -115,10 +83,10 @@ const mdxPosts: Post[] = [
     date: "June 26, 2024",
     datetime: "2024-06-26",
     author: {
-      name: "Elie Steinbock",
+      name: "Akshat Shah",
       role: "Founder",
       href: "#",
-      imageUrl: "/images/blog/elie-profile.jpg",
+      imageUrl: "/images/blog/akshat-profile.jpg",
     },
     imageUrl: "/images/reach-inbox-zero.png",
   },
@@ -131,7 +99,7 @@ const mdxPosts: Post[] = [
     datetime: "2024-06-27",
     // category: { title: "Marketing", href: "#" },
     author: {
-      name: "Ricardo Batista",
+      name: "Akshat Shah",
       role: "Founder @ AI Blog Articles",
       href: "https://getaiblogarticles.com/",
       imageUrl: "/images/blog/ricardo-batista-profile.png",
@@ -139,15 +107,15 @@ const mdxPosts: Post[] = [
     imageUrl: "/images/reach-inbox-zero.png",
   },
   {
-    title: "Achieve Mental Clarity with Inbox Zero",
+    title: "Achieve Mental Clarity with Mailto Live",
     file: "inbox-zero-benefits-for-mental-health",
     description:
-      "Learn how to achieve and maintain Inbox Zero for better mental health. Reduce stress, boost productivity, and gain mental clarity with these strategies.",
+      "Learn how to achieve and maintain Mailto Live for better mental health. Reduce stress, boost productivity, and gain mental clarity with these strategies.",
     date: "Jun 27, 2024",
     datetime: "2024-06-27",
     // category: { title: "Marketing", href: "#" },
     author: {
-      name: "Ricardo Batista",
+      name: "Akshat Shah",
       role: "Founder @ AI Blog Articles",
       href: "https://getaiblogarticles.com/",
       imageUrl: "/images/blog/ricardo-batista-profile.png",
@@ -155,14 +123,14 @@ const mdxPosts: Post[] = [
     imageUrl: "/images/reach-inbox-zero.png",
   },
   {
-    title: "Mastering Inbox Zero - A Productivity Guide for Entrepreneurs",
+    title: "Mastering Mailto Live - A Productivity Guide for Entrepreneurs",
     file: "inbox-zero-workflow-for-entrepreneurs",
     description:
-      "Learn how to achieve and maintain Inbox Zero as an entrepreneur with effective strategies, tools, and tips for efficient email management.",
+      "Learn how to achieve and maintain Mailto Live as an entrepreneur with effective strategies, tools, and tips for efficient email management.",
     date: "Jun 27, 2024",
     datetime: "2024-06-27",
     author: {
-      name: "Ricardo Batista",
+      name: "Akshat Shah",
       role: "Founder @ AI Blog Articles",
       href: "https://getaiblogarticles.com/",
       imageUrl: "/images/blog/ricardo-batista-profile.png",
@@ -178,7 +146,7 @@ const mdxPosts: Post[] = [
     datetime: "2024-06-27",
     // category: { title: "Marketing", href: "#" },
     author: {
-      name: "Ricardo Batista",
+      name: "Akshat Shah",
       role: "Founder @ AI Blog Articles",
       href: "https://getaiblogarticles.com/",
       imageUrl: "/images/blog/ricardo-batista-profile.png",
@@ -194,7 +162,7 @@ const mdxPosts: Post[] = [
     datetime: "2024-06-27",
     // category: { title: "Marketing", href: "#" },
     author: {
-      name: "Ricardo Batista",
+      name: "Akshat Shah",
       role: "Founder @ AI Blog Articles",
       href: "https://getaiblogarticles.com/",
       imageUrl: "/images/blog/ricardo-batista-profile.png",
@@ -227,7 +195,7 @@ function Posts({ posts }: { posts: SanityPost[] }) {
         name: post.authorName,
         role: "Founder",
         href: "#",
-        imageUrl: "/images/blog/elie-profile.jpg",
+        imageUrl: "/images/blog/akshat-profile.jpg",
       },
       imageUrl: post.imageURL ?? "/images/reach-inbox-zero.png",
     })),

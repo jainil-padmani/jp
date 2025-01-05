@@ -273,7 +273,7 @@ export function RuleForm({ rule }: { rule: CreateRuleBody & { id?: string } }) {
                         (errors.conditions?.[index] as { from?: FieldError })
                           ?.from
                       }
-                      placeholder="e.g. elie@getinboxzero.com"
+                      placeholder="e.g. akshat@mailto.live"
                       tooltipText="Only apply this rule to emails from this address."
                     />
                     <Input
@@ -284,7 +284,7 @@ export function RuleForm({ rule }: { rule: CreateRuleBody & { id?: string } }) {
                       error={
                         (errors.conditions?.[index] as { to?: FieldError })?.to
                       }
-                      placeholder="e.g. elie@getinboxzero.com"
+                      placeholder="e.g. akshat@mailto.live"
                       tooltipText="Only apply this rule to emails sent to this address."
                     />
                     <Input

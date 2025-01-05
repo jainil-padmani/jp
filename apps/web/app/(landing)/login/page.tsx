@@ -9,8 +9,8 @@ import { AlertBasic } from "@/components/Alert";
 import { env } from "@/env";
 
 export const metadata: Metadata = {
-  title: "Log in | Inbox Zero",
-  description: "Log in to Inbox Zero.",
+  title: "Log in | Mailto Live",
+  description: "Log in to Mailto Live.",
   alternates: { canonical: "/login" },
 };
 
@@ -73,7 +73,7 @@ export default async function AuthenticationPage({
         </p>
 
         <p className="px-4 pt-4 text-center text-sm text-gray-500">
-          Inbox Zero{"'"}s use and transfer of information received from Google
+          Mailto Live{"'"}s use and transfer of information received from Google
           APIs to any other app will adhere to{" "}
           <a
             href="https://developers.google.com/terms/api-services-user-data-policy"

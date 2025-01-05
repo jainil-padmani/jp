@@ -347,7 +347,7 @@ const AddGroupItemForm = ({
       <Input
         type="text"
         name="value"
-        placeholder="e.g. elie@getinboxzero.com"
+        placeholder="e.g. akshat@mailto.live"
         registerProps={register("value", { required: true })}
         error={errors.value}
         className="min-w-[250px]"

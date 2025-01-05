@@ -60,13 +60,13 @@ export function BulkUnsubscribe() {
             <>
               Learn how to quickly bulk unsubscribe from unwanted emails. You
               can read more in our{" "}
-              <TextLink href="https://docs.getinboxzero.com/essentials/bulk-email-unsubscriber">
+              <TextLink href="https://docs.mailto.live/essentials/bulk-email-unsubscriber">
                 documentation
               </TextLink>
               .
             </>
           }
-          videoId="T1rnooV4OYc"
+          videoId="123456789"
         />
 
         <div className="flex flex-wrap gap-1">

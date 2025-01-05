@@ -18,8 +18,8 @@ export default function Page() {
         headline="Best Email Unsubscribe App to Clean Up Your Inbox"
         datePublished="2024-06-26T08:00:00+00:00"
         dateModified="2024-06-26T08:00:00+00:00"
-        authorName="Elie Steinbock"
-        authorUrl="https://elie.tech"
+        authorName="Akshat Shah"
+        authorUrl="#"
         image={[]}
       />
       <Content />

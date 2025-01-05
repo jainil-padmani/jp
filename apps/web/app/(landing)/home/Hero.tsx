@@ -27,8 +27,7 @@ export function HeroSubtitle({ children }: { children: React.ReactNode }) {
 }
 
 export function HeroHome() {
-  if (env.NEXT_PUBLIC_POSTHOG_HERO_AB)
-    return <HeroAB variantKey={env.NEXT_PUBLIC_POSTHOG_HERO_AB} />;
+  if (env.NEXT_PUBLIC_POSTHOG_HERO_AB) return <HeroAB />;
   return <Hero />;
 }
 
@@ -59,6 +58,7 @@ export function Hero({
                 "Automate your email with AI, bulk unsubscribe from newsletters, and block cold emails."}
             </HeroSubtitle>
             <CTAButtons />
+            <LogoCloud />
           </div>
 
           <div className="relative mt-16 flow-root sm:mt-24">

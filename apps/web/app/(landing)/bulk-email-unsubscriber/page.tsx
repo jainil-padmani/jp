@@ -9,18 +9,40 @@ import { CTA } from "@/app/(landing)/home/CTA";
 import { BasicLayout } from "@/components/layouts/BasicLayout";
 
 export const metadata: Metadata = {
-  title: "Bulk Email Unsubscriber | Inbox Zero",
+  title: "Effortless Bulk Email Unsubscriber | MailtoLive",
   description:
-    "Effortlessly manage the newsletters in your inbox: one click unsubscribe, auto archive, or approve.",
+    "Simplify email management with MailtoLive's bulk email unsubscriber. One-click unsubscribe from newsletters and marketing emails for a clutter-free inbox.",
   alternates: { canonical: "/bulk-email-unsubscriber" },
+  keywords: [
+    "bulk email unsubscriber",
+    "unsubscribe emails",
+    "email management",
+    "inbox cleaner",
+    "Gmail bulk unsubscribe",
+  ],
+  openGraph: {
+    title: "Effortless Bulk Email Unsubscriber | MailtoLive",
+    description:
+      "Simplify email management with MailtoLive's bulk email unsubscriber. One-click unsubscribe from newsletters and marketing emails for a clutter-free inbox.",
+    url: "https://mailto.live/bulk-email-unsubscriber",
+    images: [
+      {
+        url: "/images/email-unsubscriber.png",
+        width: 1200,
+        height: 630,
+        alt: "Bulk Email Unsubscribe Dashboard",
+      },
+    ],
+  },
 };
 
 export default function NewsletterCleaner() {
   return (
     <BasicLayout>
       <Hero
-        title="Bulk unsubscribe from marketing emails and newsletters"
-        subtitle="Effortlessly manage the newsletters in your inbox: one click unsubscribe, auto archive, or approve."
+        title="Bulk Unsubscribe from Marketing Emails and Newsletters"
+        subtitle="Simplify your inbox management: one-click unsubscribe, auto archive, or approve."
+        image="/images/email-unsubscriber.png"
       />
       <Testimonials />
       <FeaturesUnsubscribe />

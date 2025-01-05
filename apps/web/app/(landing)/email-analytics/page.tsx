@@ -9,18 +9,39 @@ import { FeaturesStats } from "@/app/(landing)/home/Features";
 import { BasicLayout } from "@/components/layouts/BasicLayout";
 
 export const metadata: Metadata = {
-  title: "Email Analytics | Inbox Zero",
+  title: "Elevate Productivity with AI Email Analytics | MailtoLive",
   description:
-    "Gain insights and enhance productivity: analyze your email patterns for better email inbox management.",
+    "Unlock email insights to boost productivity. Analyze patterns and manage your inbox intelligently with MailtoLive's email analytics.",
   alternates: { canonical: "/email-analytics" },
+  keywords: [
+    "AI email analytics",
+    "email management",
+    "productivity tools",
+    "email insights",
+    "Mailto Live method",
+  ],
+  openGraph: {
+    title: "Elevate Productivity with AI Email Analytics | MailtoLive",
+    description:
+      "Unlock email insights to boost productivity. Analyze patterns and manage your inbox intelligently with MailtoLive's email analytics.",
+    url: "https://mailto.live/email-analytics",
+    images: [
+      {
+        url: "/images/analytics.png",
+        width: 1200,
+        height: 630,
+        alt: "Email Analytics Dashboard",
+      },
+    ],
+  },
 };
 
 export default function EmailAnalytics() {
   return (
     <BasicLayout>
       <Hero
-        title="Understand your inbox through email analytics"
-        subtitle="Gain insights and enhance productivity: analyze your email patterns for better email inbox management."
+        title="Understand Your Inbox with AI-Driven Email Analytics"
+        subtitle="Unlock insights to enhance productivity: analyze email patterns and streamline your inbox management."
         image="/images/analytics.png"
       />
       <Testimonials />

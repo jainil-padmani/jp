@@ -105,7 +105,7 @@ export function Stats() {
       <div className="mt-4 px-4">
         <Card>
           <Title>
-            How many emailers you've handled with Inbox Zero bulk unsubscribe
+            How many emailers you've handled with Mailto Live bulk unsubscribe
           </Title>
           <div className="mt-2">
             <BulkUnsubscribeSummary />

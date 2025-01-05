@@ -36,7 +36,7 @@ export function LoginForm() {
           <div className="mt-2">
             <div className="mt-8">
               <SectionDescription>
-                Inbox Zero{"'"}s use and transfer of information received from
+                Mailto Live{"'"}s use and transfer of information received from
                 Google APIs to any other app will adhere to{" "}
                 <a
                   href="https://developers.google.com/terms/api-services-user-data-policy"

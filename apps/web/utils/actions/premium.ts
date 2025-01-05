@@ -169,7 +169,7 @@ export async function updateMultiAccountPremiumAction(
       if (users.length < uniqueEmails.length) {
         return {
           warning:
-            "Not all users exist. Each account must sign up to Inbox Zero to share premium with it.",
+            "Not all users exist. Each account must sign up to Mailto Live to share premium with it.",
         };
       }
     },

@@ -12,10 +12,10 @@ export function SimpleModeOnboarding() {
       description={
         <>
           Simple email mode shows your emails for the past 24 hours, and helps
-          you reach inbox zero for the day quickly.
+          you reach Inbox Zero for the day quickly.
         </>
       }
-      videoId="YjcGsWWfFYI"
+      videoId="1234567"
       isModalOpen={isOpen}
       setIsModalOpen={setIsOpen}
     />

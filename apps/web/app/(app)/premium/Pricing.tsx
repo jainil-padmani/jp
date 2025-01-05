@@ -117,7 +117,7 @@ export function Pricing(props: { header?: React.ReactNode }) {
 
             <Button link={{ href: "/automation" }} color="blue">
               <SparklesIcon className="mr-2 h-4 w-4" />
-              Use Inbox Zero
+              Use Mailto Live
             </Button>
 
             {premiumTier && (

@@ -19,6 +19,8 @@ const navigation: NavigationItem[] = [
   { name: "Features", href: "/#features", target: "_self" },
   { name: "FAQ", href: "/#faq", target: "_self" },
   { name: "Pricing", href: "/#pricing", target: "_self" },
+  { name: "Blog", href: "/blog", target: "_self" },
+  { name: "Docs", href: "https://docs.mailto.live", target: "_self" },
 ];
 
 export function Header({ className }: { className?: string }) {

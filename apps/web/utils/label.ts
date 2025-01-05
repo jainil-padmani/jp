@@ -1,4 +1,4 @@
-export const PARENT_LABEL = "Inbox Zero";
+export const PARENT_LABEL = "Mailto Live";
 
 export const inboxZeroLabels = {
   archived: {
