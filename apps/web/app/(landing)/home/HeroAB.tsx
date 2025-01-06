@@ -32,7 +32,7 @@ const copy: {
   "meet-your-ai-assistant-2": {
     title: "Meet Your AI Email Assistant That Actually Works",
     subtitle:
-      "Cut your email time in half. Mailto Live intelligently automates responses, organizes your inbox, and helps you reach Inbox Zeroin record time.",
+      "Cut your email time in half. Mailto Live intelligently automates responses, organizes your inbox, and helps you reach Inbox Zero in record time.",
   },
 };
 

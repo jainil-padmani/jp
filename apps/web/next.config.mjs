@@ -172,6 +172,9 @@ const sentryOptions = {
   silent: true,
   org: process.env.SENTRY_ORGANIZATION,
   project: process.env.SENTRY_PROJECT,
+  sourcemaps: {
+    disable: true // Disable source map generation and uploading
+  }
 };
 
 const sentryConfig = {
@@ -179,10 +182,10 @@ const sentryConfig = {
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
+  widenClientFileUpload: false,
 
   // Transpiles SDK to be compatible with IE11 (increases bundle size)
-  transpileClientSDK: true,
+  transpileClientSDK: false,
 
   // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
   tunnelRoute: "/monitoring",
