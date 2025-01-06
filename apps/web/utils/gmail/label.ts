@@ -1,6 +1,7 @@
 import type { gmail_v1 } from "@googleapis/gmail";
 import { publishArchive, type TinybirdEmailAction } from "@inboxzero/tinybird";
 import {
+  getRandomLabelColor,
   inboxZeroLabels,
   PARENT_LABEL,
   type InboxZeroLabel,
@@ -11,15 +12,20 @@ import {
   type LabelVisibility,
   type MessageVisibility,
 } from "@/utils/gmail/constants";
+import { createScopedLogger } from "@/utils/logger";
 
-export const INBOX_LABEL_ID = "INBOX";
-export const SENT_LABEL_ID = "SENT";
-export const UNREAD_LABEL_ID = "UNREAD";
-export const STARRED_LABEL_ID = "STARRED";
-export const IMPORTANT_LABEL_ID = "IMPORTANT";
-export const SPAM_LABEL_ID = "SPAM";
-export const TRASH_LABEL_ID = "TRASH";
-export const DRAFT_LABEL_ID = "DRAFT";
+const logger = createScopedLogger("gmail/label");
+
+export const GmailLabel = {
+  INBOX: "INBOX",
+  SENT: "SENT",
+  UNREAD: "UNREAD",
+  STARRED: "STARRED",
+  IMPORTANT: "IMPORTANT",
+  SPAM: "SPAM",
+  TRASH: "TRASH",
+  DRAFT: "DRAFT",
+};
 
 export async function labelThread(options: {
   gmail: gmail_v1.Gmail;
@@ -56,7 +62,7 @@ export async function archiveThread({
     userId: "me",
     id: threadId,
     requestBody: {
-      removeLabelIds: [INBOX_LABEL_ID],
+      removeLabelIds: [GmailLabel.INBOX],
       ...(labelId ? { addLabelIds: [labelId] } : {}),
     },
   });
@@ -76,18 +82,18 @@ export async function archiveThread({
   if (archiveResult.status === "rejected") {
     const error = archiveResult.reason as Error;
     if (error.message?.includes("Requested entity was not found")) {
-      console.error(`Thread not found: ${threadId}`);
+      logger.error("Thread not found", { threadId });
       return { status: 404, message: "Thread not found" };
     }
-    console.error(`Failed to archive thread: ${threadId}`, error);
+    logger.error("Failed to archive thread", { threadId, error });
     throw error;
   }
 
   if (publishResult.status === "rejected") {
-    console.error(
-      `Failed to publish archive action: ${threadId}`,
-      publishResult.reason,
-    );
+    logger.error("Failed to publish archive action", {
+      threadId,
+      error: publishResult.reason,
+    });
   }
 
   return archiveResult.value;
@@ -120,10 +126,10 @@ export async function markReadThread(options: {
     id: threadId,
     requestBody: read
       ? {
-          removeLabelIds: [UNREAD_LABEL_ID],
+          removeLabelIds: [GmailLabel.UNREAD],
         }
       : {
-          addLabelIds: [UNREAD_LABEL_ID],
+          addLabelIds: [GmailLabel.UNREAD],
         },
   });
 }
@@ -140,10 +146,10 @@ export async function markImportantMessage(options: {
     id: messageId,
     requestBody: important
       ? {
-          addLabelIds: [IMPORTANT_LABEL_ID],
+          addLabelIds: [GmailLabel.IMPORTANT],
         }
       : {
-          removeLabelIds: [IMPORTANT_LABEL_ID],
+          removeLabelIds: [GmailLabel.IMPORTANT],
         },
   });
 }
@@ -170,7 +176,7 @@ async function createLabel({
         labelListVisibility,
         color: color
           ? { backgroundColor: color, textColor: "#000000" }
-          : undefined,
+          : { backgroundColor: getRandomLabelColor(), textColor: "#000000" },
       },
     });
     return createdLabel.data;
@@ -180,7 +186,7 @@ async function createLabel({
     // Handle label already exists case
     // May be happening due to a race condition where the label was created between the list and create?
     if (errorMessage?.includes("Label name exists or conflicts")) {
-      console.warn(`Label already exists: ${name}`);
+      logger.warn("Label already exists", { name });
       const label = await getLabel({ gmail, name });
       if (label) return label;
       throw new Error(`Label conflict but not found: ${name}`);
@@ -196,10 +202,7 @@ async function createLabel({
 }
 
 export async function getLabels(gmail: gmail_v1.Gmail) {
-  const response = await gmail.users.labels.list({
-    userId: "me",
-    fields: "labels(id,name,messagesTotal,messagesUnread,type,color)",
-  });
+  const response = await gmail.users.labels.list({ userId: "me" });
   return response.data.labels;
 }
 
@@ -264,7 +267,7 @@ export async function getOrCreateInboxZeroLabel({
     try {
       await createLabel({ gmail, name: PARENT_LABEL });
     } catch (error) {
-      console.warn(`Parent label already exists: ${PARENT_LABEL}`);
+      logger.warn("Parent label already exists", { name: PARENT_LABEL });
     }
   }
 

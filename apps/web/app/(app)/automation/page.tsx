@@ -5,18 +5,13 @@ import { Pending } from "@/app/(app)/automation/Pending";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import { Rules } from "@/app/(app)/automation/Rules";
-import { TestRulesContent } from "@/app/(app)/automation/TestRules";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { BulkRunRules } from "@/app/(app)/automation/BulkRunRules";
+import { Process } from "@/app/(app)/automation/Process";
 import { Groups } from "@/app/(app)/automation/group/Groups";
 import { RulesPrompt } from "@/app/(app)/automation/RulesPrompt";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { PermissionsCheck } from "@/app/(app)/PermissionsCheck";
+import { ClientOnly } from "@/components/ClientOnly";
+import { AutomationOnboarding } from "@/app/(app)/automation/AutomationOnboarding";
 
 export const maxDuration = 300; // Applies to the actions
 
@@ -34,26 +29,23 @@ export default async function AutomationPage() {
             <TabsList>
               <TabsTrigger value="prompt">Prompt</TabsTrigger>
               <TabsTrigger value="rules">Rules</TabsTrigger>
-              <TabsTrigger value="test">Test</TabsTrigger>
-              <TabsTrigger value="pending">Pending</TabsTrigger>
+              <TabsTrigger value="test">Process</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="pending">Pending</TabsTrigger>
               <TabsTrigger value="groups">Groups</TabsTrigger>
             </TabsList>
           </div>
 
-          <div className="flex gap-2">
-            <BulkRunRules />
-            <OnboardingModal
-              title="Getting started with AI Personal Assistant"
-              description={
-                <>
-                  Learn how to use the AI Personal Assistant to automatically
-                  label, archive, and more.
-                </>
-              }
-              videoId="1234567890"
-            />
-          </div>
+          <OnboardingModal
+            title="Getting started with AI Personal Assistant"
+            description={
+              <>
+                Learn how to use the AI Personal Assistant to automatically
+                label, archive, and more.
+              </>
+            }
+            videoId="1234567890"
+          />
         </div>
 
         <TabsContent value="prompt" className="content-container mb-10">
@@ -62,28 +54,23 @@ export default async function AutomationPage() {
         <TabsContent value="rules" className="content-container mb-10">
           <Rules />
         </TabsContent>
-        <TabsContent value="pending" className="content-container mb-10">
-          <Pending />
+        <TabsContent value="test" className="content-container mb-10">
+          <Process />
         </TabsContent>
         <TabsContent value="history" className="content-container mb-10">
           <History />
         </TabsContent>
-        <TabsContent value="test" className="content-container mb-10">
-          <Card>
-            <CardHeader>
-              <CardTitle>Test your rules</CardTitle>
-              <CardDescription>
-                Check how your rules perform against previous emails or custom
-                content.
-              </CardDescription>
-            </CardHeader>
-            <TestRulesContent />
-          </Card>
+        <TabsContent value="pending" className="content-container mb-10">
+          <Pending />
         </TabsContent>
         <TabsContent value="groups" className="content-container mb-10">
           <Groups />
         </TabsContent>
       </Tabs>
+
+      <ClientOnly>
+        <AutomationOnboarding />
+      </ClientOnly>
     </Suspense>
   );
 }

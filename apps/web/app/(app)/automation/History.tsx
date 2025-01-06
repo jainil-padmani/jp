@@ -44,7 +44,7 @@ export function History() {
         ) : (
           <AlertBasic
             title="No history"
-            description="No AI personal assistant actions have been run yet."
+            description="No Personal Assistant actions have been taken yet."
           />
         )}
       </LoadingContent>
@@ -86,7 +86,12 @@ function HistoryTable({
                 />
               </TableCell>
               <TableCell>
-                <RuleCell rule={p.rule} reason={p.reason} />
+                <RuleCell
+                  rule={p.rule}
+                  reason={p.reason}
+                  message={p.message}
+                  isTest={false}
+                />
               </TableCell>
               <TableCell>
                 <ActionItemsCell actionItems={p.actionItems} />

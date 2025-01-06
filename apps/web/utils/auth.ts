@@ -45,7 +45,7 @@ export const getAuthOptions: (options?: {
       },
     }),
   ],
-  adapter: PrismaAdapter(prisma) as any, // TODO
+  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   // based on: https://authjs.dev/guides/basics/refresh-token-rotation
   // and: https://github.com/nextauthjs/next-auth-refresh-token-example/blob/main/pages/api/auth/%5B...nextauth%5D.js
@@ -158,8 +158,6 @@ export const getAuthOptions: (options?: {
   },
 });
 
-export const authOptions = getAuthOptions();
-
 /**
  * Takes a token, and returns a new token with updated
  * `access_token` and `expires_at`. If an error occurs,
@@ -187,7 +185,7 @@ const refreshAccessToken = async (token: JWT): Promise<JWT> => {
     });
     return {
       ...token,
-      error: "RefreshAccessTokenError",
+      error: "RequiresReconsent",
     };
   }
 
@@ -262,11 +260,23 @@ export async function saveRefreshToken(
   },
   account: Pick<Account, "refresh_token" | "providerAccountId">,
 ) {
+  const refreshToken = tokens.refresh_token ?? account.refresh_token;
+
+  if (!refreshToken) {
+    logger.error("Attempted to save null refresh token", {
+      providerAccountId: account.providerAccountId,
+    });
+    captureException("Cannot save null refresh token", {
+      extra: { providerAccountId: account.providerAccountId },
+    });
+    return;
+  }
+
   return await prisma.account.update({
     data: {
       access_token: tokens.access_token,
       expires_at: tokens.expires_at,
-      refresh_token: tokens.refresh_token ?? account.refresh_token,
+      refresh_token: refreshToken,
     },
     where: {
       provider_providerAccountId: {
@@ -305,6 +315,9 @@ declare module "@auth/core/jwt" {
     access_token?: string;
     expires_at?: number;
     refresh_token?: string;
-    error?: "RefreshAccessTokenError" | "MissingAccountError";
+    error?:
+      | "RefreshAccessTokenError"
+      | "MissingAccountError"
+      | "RequiresReconsent";
   }
 }

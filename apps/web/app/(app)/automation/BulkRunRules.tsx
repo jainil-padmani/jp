@@ -37,10 +37,10 @@ export function BulkRunRules() {
 
   return (
     <div>
-      <Tooltip content="Select emails to process with AI">
+      <Tooltip content="Bulk process emails">
         <Button type="button" size="icon" variant="outline" onClick={openModal}>
           <HistoryIcon className="size-4" />
-          <span className="sr-only">Select emails to process with AI</span>
+          <span className="sr-only">Select emails to process</span>
         </Button>
       </Tooltip>
       <Modal
@@ -52,15 +52,14 @@ export function BulkRunRules() {
           {data && (
             <>
               <SectionDescription className="mt-2">
-                This feature applies AI processing to emails currently in your
-                inbox that haven't been handled by AI yet. Select a date range
-                to define which emails to process.
+                This runs your rules on emails currently in your inbox (that
+                have not been previously processed).
               </SectionDescription>
 
               {!!queue.size && (
-                <SectionDescription className="mt-2">
-                  Processing progress: {totalThreads - queue.size}/
-                  {totalThreads} emails completed
+                <SectionDescription className="mt-2 rounded-md border border-green-200 bg-green-50 px-2 py-1.5">
+                  Progress: {totalThreads - queue.size}/{totalThreads} emails
+                  completed
                 </SectionDescription>
               )}
               <div className="mt-4">
@@ -115,29 +114,15 @@ export function BulkRunRules() {
               </div>
 
               <SectionDescription className="mt-4">
-                Note:
-                <ul className="mt-1 list-inside list-disc">
-                  <li>This only affects emails in your inbox.</li>
-                  <li>Emails already processed by AI will be skipped.</li>
-                </ul>
-              </SectionDescription>
-
-              <SectionDescription className="mt-4">
-                To process specific emails:
-                <ol className="mt-1 list-inside list-decimal">
-                  <li>
-                    Go to the{" "}
-                    <Link
-                      href="/mail"
-                      className="font-semibold hover:underline"
-                    >
-                      Mail
-                    </Link>{" "}
-                    page
-                  </li>
-                  <li>Select the desired emails</li>
-                  <li>Click the "Run AI Rules" button</li>
-                </ol>
+                You can also process specific emails by visiting the{" "}
+                <Link
+                  href="/mail"
+                  target="_blank"
+                  className="font-semibold hover:underline"
+                >
+                  Mail
+                </Link>{" "}
+                page.
               </SectionDescription>
             </>
           )}

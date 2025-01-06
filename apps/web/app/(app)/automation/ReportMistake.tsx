@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { isActionError } from "@/utils/error";
-import type { TestResult } from "@/utils/ai/choose-rule/run-rules";
+import type { RunRulesResult } from "@/utils/ai/choose-rule/run-rules";
 import {
   Dialog,
   DialogContent,
@@ -24,8 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { reportAiMistakeAction, testAiAction } from "@/utils/actions/ai-rule";
-import type { MessagesResponse } from "@/app/api/google/messages/route";
+import { reportAiMistakeAction, runRulesAction } from "@/utils/actions/ai-rule";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   reportAiMistakeBody,
@@ -36,15 +35,21 @@ import {
 import type { RulesResponse } from "@/app/api/user/rules/route";
 import { LoadingContent } from "@/components/LoadingContent";
 import { Input } from "@/components/Input";
-import type { Rule } from "@prisma/client";
+import { GroupItemType, type Rule } from "@prisma/client";
 import { updateRuleInstructionsAction } from "@/utils/actions/rule";
 import { Separator } from "@/components/ui/separator";
 import { SectionDescription } from "@/components/Typography";
 import { Badge } from "@/components/Badge";
-import { TestResultDisplay } from "@/app/(app)/automation/TestRules";
+import { ProcessResultDisplay } from "@/app/(app)/automation/ProcessResultDisplay";
 import { isReplyInThread } from "@/utils/thread";
-import { isAIRule } from "@/utils/condition";
+import { isAIRule, isGroupRule, isStaticRule } from "@/utils/condition";
 import { Loading } from "@/components/Loading";
+import type { ParsedMessage } from "@/utils/types";
+import {
+  addGroupItemAction,
+  deleteGroupItemAction,
+} from "@/utils/actions/group";
+import { toast } from "sonner";
 
 type ReportMistakeView = "select-expected-rule" | "ai-fix" | "manual-fix";
 
@@ -53,9 +58,11 @@ const NONE_RULE_ID = "__NONE__";
 export function ReportMistake({
   message,
   result,
+  isTest,
 }: {
-  message: MessagesResponse["messages"][number];
-  result: TestResult | null;
+  message: ParsedMessage;
+  result: RunRulesResult | null;
+  isTest: boolean;
 }) {
   const { data, isLoading, error } = useSWR<RulesResponse, { error: string }>(
     "/api/user/rules",
@@ -83,6 +90,7 @@ export function ReportMistake({
               message={message}
               result={result}
               actualRule={actualRule ?? null}
+              isTest={isTest}
             />
           )}
         </LoadingContent>
@@ -96,11 +104,13 @@ function Content({
   message,
   result,
   actualRule,
+  isTest,
 }: {
   rules: RulesResponse;
-  message: MessagesResponse["messages"][number];
-  result: TestResult | null;
+  message: ParsedMessage;
+  result: RunRulesResult | null;
   actualRule: Rule | null;
+  isTest: boolean;
 }) {
   const [loadingAiFix, setLoadingAiFix] = useState(false);
   const [fixedInstructions, setFixedInstructions] = useState<{
@@ -118,21 +128,19 @@ function Content({
     [rules, expectedRuleId],
   );
 
-  const [view, setView] = useState<ReportMistakeView>("select-expected-rule");
-  const [_viewStack, setViewStack] = useState<ReportMistakeView[]>([
+  const [viewStack, setViewStack] = useState<ReportMistakeView[]>([
     "select-expected-rule",
   ]);
+  const view = useMemo(() => viewStack[viewStack.length - 1], [viewStack]);
 
   const onSetView = useCallback((newView: ReportMistakeView) => {
     setViewStack((stack) => [...stack, newView]);
-    setView(newView);
   }, []);
 
   const onBack = useCallback(() => {
     setViewStack((stack) => {
       if (stack.length <= 1) return stack;
       const newStack = stack.slice(0, -1);
-      setView(newStack[newStack.length - 1]);
       return newStack;
     });
   }, []);
@@ -141,11 +149,14 @@ function Content({
     async (expectedRuleId: string | null) => {
       setExpectedRuleId(expectedRuleId);
 
+      const expectedRule = rules.find((rule) => rule.id === expectedRuleId);
+
       // if AI rule, then use AI to suggest a fix
-      if (
+      const isEitherAIRule =
         (expectedRule && isAIRule(expectedRule)) ||
-        (actualRule && isAIRule(actualRule))
-      ) {
+        (actualRule && isAIRule(actualRule));
+
+      if (isEitherAIRule) {
         onSetView("ai-fix");
         setLoadingAiFix(true);
         const response = await reportAiMistakeAction({
@@ -185,11 +196,50 @@ function Content({
         onSetView("manual-fix");
       }
     },
-    [message, result?.rule?.id, onSetView, expectedRule, actualRule],
+    [message, result?.rule?.id, onSetView, actualRule, rules],
   );
 
+  if (view === "select-expected-rule") {
+    return (
+      <RuleMismatch
+        result={result}
+        onSelectExpectedRuleId={onSelectExpectedRule}
+        rules={rules}
+      />
+    );
+  }
+
+  const isExpectedGroupRule = !!(expectedRule && isGroupRule(expectedRule));
+  const isActualGroupRule = !!(actualRule && isGroupRule(actualRule));
+
+  if (isExpectedGroupRule || isActualGroupRule) {
+    return (
+      <GroupMismatch
+        ruleId={expectedRule?.id || actualRule?.id!}
+        groupId={expectedRule?.groupId || actualRule?.groupId!}
+        message={message}
+        isExpectedGroupRule={isExpectedGroupRule}
+        onBack={onBack}
+      />
+    );
+  }
+
+  const isExpectedStaticRule = !!(expectedRule && isStaticRule(expectedRule));
+  const isActualStaticRule = !!(actualRule && isStaticRule(actualRule));
+
+  if (isExpectedStaticRule || isActualStaticRule) {
+    return (
+      <StaticMismatch
+        ruleId={expectedRule?.id || actualRule?.id!}
+        isExpectedStaticRule={isExpectedStaticRule}
+        onBack={onBack}
+      />
+    );
+  }
+
   if (
-    expectedRule?.runOnThreads &&
+    expectedRule &&
+    !expectedRule.runOnThreads &&
     isReplyInThread(message.id, message.threadId)
   ) {
     return (
@@ -200,48 +250,43 @@ function Content({
     );
   }
 
-  switch (view) {
-    case "select-expected-rule":
-      return (
-        <RuleMismatch
-          result={result}
-          onSelectExpectedRuleId={onSelectExpectedRule}
-          rules={rules}
-        />
-      );
-    case "ai-fix":
-      return (
-        <AIFixView
-          loadingAiFix={loadingAiFix}
-          fixedInstructions={fixedInstructions ?? null}
-          fixedInstructionsRule={fixedInstructionsRule ?? null}
-          messageId={message.id}
-          onBack={onBack}
-          onReject={() => onSetView("manual-fix")}
-        />
-      );
-    case "manual-fix":
-      return (
-        <ManualFixView
-          actualRule={actualRule}
-          expectedRule={expectedRule}
-          message={message}
-          result={result}
-          onBack={onBack}
-        />
-      );
-    default:
-      // biome-ignore lint/correctness/noSwitchDeclarations: intentional exhaustive check
-      const exhaustiveCheck: never = view;
-      return exhaustiveCheck;
+  if (view === "ai-fix") {
+    return (
+      <AIFixView
+        loadingAiFix={loadingAiFix}
+        fixedInstructions={fixedInstructions ?? null}
+        fixedInstructionsRule={fixedInstructionsRule ?? null}
+        message={message}
+        isTest={isTest}
+        onBack={onBack}
+        onReject={() => onSetView("manual-fix")}
+      />
+    );
   }
+
+  if (view === "manual-fix") {
+    return (
+      <ManualFixView
+        actualRule={actualRule}
+        expectedRule={expectedRule}
+        message={message}
+        result={result}
+        isTest={isTest}
+        onBack={onBack}
+      />
+    );
+  }
+
+  const exhaustiveCheck: never = view;
+  return exhaustiveCheck;
 }
 
 function AIFixView({
   loadingAiFix,
   fixedInstructions,
   fixedInstructionsRule,
-  messageId,
+  message,
+  isTest,
   onBack,
   onReject,
 }: {
@@ -251,7 +296,8 @@ function AIFixView({
     fixedInstructions: string;
   } | null;
   fixedInstructionsRule: Rule | null;
-  messageId: string;
+  message: ParsedMessage;
+  isTest: boolean;
   onBack: () => void;
   onReject: () => void;
 }) {
@@ -268,7 +314,7 @@ function AIFixView({
     <div className="space-y-2">
       {fixedInstructionsRule?.instructions ? (
         <div className="space-y-2">
-          <TestResultDisplay result={{ rule: fixedInstructionsRule }} />
+          <ProcessResultDisplay result={{ rule: fixedInstructionsRule }} />
           <Instructions
             label="Original:"
             instructions={fixedInstructionsRule?.instructions}
@@ -280,11 +326,12 @@ function AIFixView({
 
       {fixedInstructions?.ruleId && (
         <SuggestedFix
-          messageId={messageId}
+          message={message}
           ruleId={fixedInstructions.ruleId}
           fixedInstructions={fixedInstructions.fixedInstructions}
           onReject={onReject}
-          showRerunTestButton
+          showRerunButton
+          isTest={isTest}
         />
       )}
 
@@ -298,7 +345,7 @@ function RuleMismatch({
   rules,
   onSelectExpectedRuleId,
 }: {
-  result: TestResult | null;
+  result: RunRulesResult | null;
   rules: RulesResponse;
   onSelectExpectedRuleId: (ruleId: string | null) => void;
 }) {
@@ -307,7 +354,7 @@ function RuleMismatch({
       <Label name="matchedRule" label="Matched:" />
       <div className="mt-1">
         {result ? (
-          <TestResultDisplay result={result} />
+          <ProcessResultDisplay result={result} />
         ) : (
           <p>No rule matched</p>
         )}
@@ -315,6 +362,13 @@ function RuleMismatch({
       <div className="mt-4">
         <Label name="ruleId" label="Which rule did you expect it to match?" />
       </div>
+
+      {!rules.length && (
+        <SectionDescription className="mt-2">
+          You haven't created any rules yet!
+        </SectionDescription>
+      )}
+
       <div className="mt-1 flex flex-col gap-1">
         {[{ id: NONE_RULE_ID, name: "None" }, ...rules]
           .filter((rule) => rule.id !== (result?.rule?.id || NONE_RULE_ID))
@@ -353,23 +407,114 @@ function ThreadSettingsMismatchMessage({
   );
 }
 
+function GroupMismatch({
+  ruleId,
+  groupId,
+  message,
+  isExpectedGroupRule,
+  onBack,
+}: {
+  ruleId: string;
+  groupId: string;
+  message: ParsedMessage;
+  isExpectedGroupRule: boolean;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <SectionDescription>
+        {isExpectedGroupRule
+          ? // Case 1: User expected this group rule to match, but it didn't
+            "The rule you expected it to match is a group rule, but this message didn't match any of the group items. You can edit the group to include this email."
+          : // Case 2: User didn't expect this group rule to match, but it did
+            "This email matched because it's part of a group rule. To prevent it from matching, you'll need to remove it from the group or adjust the group settings."}
+      </SectionDescription>
+
+      {isExpectedGroupRule && (
+        <div className="mt-2 flex gap-2">
+          <div className="rounded border border-gray-200 bg-gray-50 p-2 text-sm">
+            From: {message.headers.from}
+          </div>
+          <Button
+            className="mt-2"
+            onClick={() => {
+              toast.promise(
+                async () => {
+                  const result = await addGroupItemAction({
+                    groupId,
+                    type: GroupItemType.FROM,
+                    value: message.headers.from,
+                  });
+
+                  if (isActionError(result)) throw new Error(result.error);
+                },
+                {
+                  loading: "Adding to group...",
+                  success: "Added to group",
+                  error: (error) => `Failed to add to group: ${error.message}`,
+                },
+              );
+            }}
+          >
+            Add to group
+          </Button>
+        </div>
+      )}
+
+      <div className="mt-2 flex gap-2">
+        <BackButton onBack={onBack} />
+        <EditRuleButton ruleId={ruleId} />
+      </div>
+    </div>
+  );
+}
+
+// TODO: Could auto fix the static rule for the user
+function StaticMismatch({
+  ruleId,
+  isExpectedStaticRule,
+  onBack,
+}: {
+  ruleId: string;
+  isExpectedStaticRule: boolean;
+  onBack: () => void;
+}) {
+  return (
+    <div>
+      <SectionDescription>
+        {isExpectedStaticRule
+          ? // Case 1: User expected this static rule to match, but it didn't
+            " The rule you expected it to match is set to match static conditions, but this message doesn't match any of the static conditions."
+          : // Case 2: User didn't expect this static rule to match, but it did
+            "This email matched because of static conditions in the rule. To prevent it from matching, you'll need to remove or adjust the matching conditions in the rule settings."}
+      </SectionDescription>
+      <div className="mt-2 flex gap-2">
+        <BackButton onBack={onBack} />
+        <EditRuleButton ruleId={ruleId} />
+      </div>
+    </div>
+  );
+}
+
 function ManualFixView({
   actualRule,
   expectedRule,
   message,
   result,
   onBack,
+  isTest,
 }: {
   actualRule?: Rule | null;
   expectedRule?: Rule | null;
-  message: MessagesResponse["messages"][number];
-  result: TestResult | null;
+  message: ParsedMessage;
+  result: RunRulesResult | null;
   onBack: () => void;
+  isTest: boolean;
 }) {
   return (
     <>
       <>
-        {result && <TestResultDisplay result={result} prefix="Matched: " />}
+        {result && <ProcessResultDisplay result={result} prefix="Matched: " />}
         {actualRule && (
           <>
             {isAIRule(actualRule) ? (
@@ -400,11 +545,12 @@ function ManualFixView({
             message={message}
             result={result}
             expectedRuleId={expectedRule.id}
+            isTest={isTest}
           />
           <Separator />
         </>
       )}
-      <RerunTestButton messageId={message.id} />
+      <RerunButton message={message} isTest={isTest} />
       <BackButton onBack={onBack} />
     </>
   );
@@ -466,10 +612,12 @@ function AIFixForm({
   message,
   result,
   expectedRuleId,
+  isTest,
 }: {
-  message: MessagesResponse["messages"][number];
-  result: TestResult | null;
+  message: ParsedMessage;
+  result: RunRulesResult | null;
   expectedRuleId: string | null;
+  isTest: boolean;
 }) {
   const [fixedInstructions, setFixedInstructions] = useState<{
     ruleId: string;
@@ -551,11 +699,12 @@ function AIFixForm({
 
       {fixedInstructions && (
         <SuggestedFix
-          messageId={message.id}
+          message={message}
           ruleId={fixedInstructions.ruleId}
           fixedInstructions={fixedInstructions.fixedInstructions}
           onReject={() => setFixedInstructions(undefined)}
-          showRerunTestButton={false}
+          showRerunButton={false}
+          isTest={isTest}
         />
       )}
     </div>
@@ -563,17 +712,19 @@ function AIFixForm({
 }
 
 function SuggestedFix({
-  messageId,
+  message,
   ruleId,
   fixedInstructions,
   onReject,
-  showRerunTestButton,
+  showRerunButton,
+  isTest,
 }: {
-  messageId: string;
+  message: ParsedMessage;
   ruleId: string;
   fixedInstructions: string;
   onReject: () => void;
-  showRerunTestButton: boolean;
+  showRerunButton: boolean;
+  isTest: boolean;
 }) {
   const [isSaving, setIsSaving] = useState(false);
   const [accepted, setAccepted] = useState(false);
@@ -583,9 +734,9 @@ function SuggestedFix({
       <Instructions label="Suggested fix:" instructions={fixedInstructions} />
 
       {accepted ? (
-        showRerunTestButton && (
+        showRerunButton && (
           <div className="mt-2">
-            <RerunTestButton messageId={messageId} />
+            <RerunButton message={message} isTest={isTest} />
           </div>
         )
       ) : (
@@ -638,9 +789,15 @@ function Instructions({
   );
 }
 
-function RerunTestButton({ messageId }: { messageId: string }) {
+function RerunButton({
+  message,
+  isTest,
+}: {
+  message: ParsedMessage;
+  isTest: boolean;
+}) {
   const [checking, setChecking] = useState(false);
-  const [testResult, setTestResult] = useState<TestResult>();
+  const [result, setResult] = useState<RunRulesResult>();
 
   return (
     <>
@@ -649,26 +806,30 @@ function RerunTestButton({ messageId }: { messageId: string }) {
         onClick={async () => {
           setChecking(true);
 
-          const result = await testAiAction({ messageId });
+          const result = await runRulesAction({
+            messageId: message.id,
+            threadId: message.threadId,
+            isTest,
+          });
           if (isActionError(result)) {
             toastError({
               title: "There was an error testing the email",
               description: result.error,
             });
           } else {
-            setTestResult(result);
+            setResult(result);
           }
           setChecking(false);
         }}
       >
         <SparklesIcon className="mr-2 size-4" />
-        Rerun Test
+        Rerun
       </Button>
 
-      {testResult && (
+      {result && (
         <div className="mt-2 flex items-center gap-2">
-          <SectionDescription>Test Result:</SectionDescription>
-          <TestResultDisplay result={testResult} />
+          <SectionDescription>Result:</SectionDescription>
+          <ProcessResultDisplay result={result} />
         </div>
       )}
     </>
@@ -677,7 +838,7 @@ function RerunTestButton({ messageId }: { messageId: string }) {
 
 function BackButton({ onBack }: { onBack: () => void }) {
   return (
-    <Button variant="outline" onClick={onBack}>
+    <Button variant="outline" size="sm" onClick={onBack}>
       <ArrowLeftIcon className="mr-2 size-4" />
       Back
     </Button>
