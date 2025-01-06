@@ -233,7 +233,7 @@ async function createRule(
       userId,
       actions: { createMany: { data: result.actions } },
       automate: shouldAutomate(result.actions),
-      runOnThreads: false,
+      runOnThreads: shouldRunOnThreads(result.condition.type),
       instructions: result.condition.aiInstructions,
       from: result.condition.static?.from,
       to: result.condition.static?.to,
@@ -543,6 +543,7 @@ export const saveRulesPromptAction = withActionInstrumentation(
         aiModel: true,
         aiApiKey: true,
         email: true,
+        categories: { select: { id: true } },
       },
     });
 
@@ -571,6 +572,8 @@ export const saveRulesPromptAction = withActionInstrumentation(
     let addedRules: Awaited<ReturnType<typeof aiPromptToRules>> | null = null;
     let editRulesCount = 0;
     let removeRulesCount = 0;
+
+    const hasSmartCategories = user.categories.length > 0;
 
     // check how the prompts have changed, and make changes to the rules accordingly
     if (oldPromptFile) {
@@ -609,6 +612,7 @@ export const saveRulesPromptAction = withActionInstrumentation(
           user: { ...user, email: user.email },
           promptFile: diff.addedRules.join("\n\n"),
           isEditing: false,
+          hasSmartCategories,
         });
         logger.info("Added rules", {
           email: user.email,
@@ -691,6 +695,7 @@ export const saveRulesPromptAction = withActionInstrumentation(
             )
             .join("\n\n"),
           isEditing: true,
+          hasSmartCategories,
         });
 
         for (const rule of editedRules) {
@@ -736,6 +741,7 @@ export const saveRulesPromptAction = withActionInstrumentation(
         user: { ...user, email: user.email },
         promptFile: data.rulesPrompt,
         isEditing: false,
+        hasSmartCategories,
       });
       logger.info("Rules to be added", {
         email: user.email,
