@@ -13,7 +13,7 @@ export const examplePrompts = [
   ...commonPrompts,
   'Label pitch decks as "Pitch Deck" and forward them to john@investing.com',
   'Label receipts as "Receipt" and forward them to jane@accounting.com',
-  "Reply to cold emails by telling them to check out Inbox Zero. Then mark them as spam",
+  "Reply to cold emails by telling them to check out Mailto Live. Then mark them as spam",
   'Label high priority emails as "High Priority"',
   "If a founder asks to set up a call, send them my calendar link: https://cal.com/example",
   "If someone asks to cancel a plan, ask to set up a call by sending my calendar link",
