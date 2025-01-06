@@ -59,7 +59,7 @@ export const env = createEnv({
     LICENSE_25_SEAT_VARIANT_ID: z.coerce.number().optional(),
   },
   client: {
-    NEXT_PUBLIC_LEMON_STORE_ID: z.string().nullish().default("inboxzero"),
+    NEXT_PUBLIC_LEMON_STORE_ID: z.string().nullish().default("mailtolive"),
 
     // lemon plans
     // basic
@@ -86,7 +86,7 @@ export const env = createEnv({
     NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_PAYMENT_LINK: z.string().default(""),
     NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_VARIANT_ID: z.coerce.number().default(0),
 
-    NEXT_PUBLIC_FREE_UNSUBSCRIBE_CREDITS: z.number().default(5),
+    NEXT_PUBLIC_FREE_UNSUBSCRIBE_CREDITS: z.number().default(1),
     NEXT_PUBLIC_CALL_LINK: z
       .string()
       .default("https://cal.com/team/inbox-zero/feedback"),
