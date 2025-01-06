@@ -10,8 +10,6 @@ import { Groups } from "@/app/(app)/automation/group/Groups";
 import { RulesPrompt } from "@/app/(app)/automation/RulesPrompt";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { PermissionsCheck } from "@/app/(app)/PermissionsCheck";
-import { ClientOnly } from "@/components/ClientOnly";
-import { AutomationOnboarding } from "@/app/(app)/automation/AutomationOnboarding";
 
 export const maxDuration = 300; // Applies to the actions
 
@@ -44,7 +42,7 @@ export default async function AutomationPage() {
                 label, archive, and more.
               </>
             }
-            videoId="1234567890"
+            videoId="1LSt3dyyZtQ"
           />
         </div>
 
@@ -67,10 +65,6 @@ export default async function AutomationPage() {
           <Groups />
         </TabsContent>
       </Tabs>
-
-      <ClientOnly>
-        <AutomationOnboarding />
-      </ClientOnly>
     </Suspense>
   );
 }
