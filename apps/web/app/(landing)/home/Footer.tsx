@@ -7,7 +7,6 @@ const navigation = {
     { name: "Email Analytics", href: "/email-analytics" },
     { name: "Email AI Assistant", href: "/ai-automation" },
     { name: "New Sender Management", href: "/new-email-senders" },
-    { name: "OSS Friends", href: "/oss-friends" },
   ],
   support: [
     { name: "Pricing", href: "/#pricing" },
