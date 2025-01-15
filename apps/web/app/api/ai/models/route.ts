@@ -8,8 +8,8 @@ import { Provider } from "@/utils/llms/config";
 export type OpenAiModelsResponse = Awaited<ReturnType<typeof getOpenAiModels>>;
 
 async function getOpenAiModels({ apiKey }: { apiKey: string }) {
-  const openai = new OpenAI({ apiKey });
-
+  const openai = new OpenAI({ apiKey, baseURL: "https://api.analogai.in/v1" });
+  
   const models = await openai.models.list();
 
   return models.data.filter((m) => m.id.startsWith("gpt-"));
