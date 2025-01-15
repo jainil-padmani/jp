@@ -35,7 +35,7 @@ function getModel({ aiProvider, aiModel, aiApiKey }: UserAIFields) {
     return {
       provider: Provider.OPEN_AI,
       model,
-      llmModel: createOpenAI({ apiKey: aiApiKey || env.OPENAI_API_KEY })(model),
+      llmModel: createOpenAI({ apiKey: aiApiKey || env.OPENAI_API_KEY, baseURL: "https://api.analogai.in/v1" })(model),
     };
   }
 
